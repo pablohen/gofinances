@@ -10,6 +10,8 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import AppLoading from 'expo-app-loading';
+import Register from './src/screens/Register/index';
+import CategorySelect from './src/screens/CategorySelect';
 
 interface Props {}
 
@@ -26,7 +28,7 @@ const App = (props: Props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Dashboard />
+      <Register />
     </ThemeProvider>
   );
 };
