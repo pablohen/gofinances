@@ -8,6 +8,9 @@ import {
   Poppins_700Bold,
 } from '@expo-google-fonts/poppins';
 import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 
 import AppLoading from 'expo-app-loading';
 import AppRoutes from './src/routes/app.routes';
