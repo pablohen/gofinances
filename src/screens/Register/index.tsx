@@ -32,7 +32,8 @@ const schema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
   amount: Yup.number()
     .typeError('Informe um valor númerico')
-    .positive('O valor não pode ser negativo'),
+    .positive('O valor não pode ser negativo')
+    .required('o valor é obrigatório'),
 });
 
 interface Props {}
@@ -95,10 +96,10 @@ const Register = (props: Props) => {
       reset();
       navigation.navigate('Listagem');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Alert.alert('Não foi possivel salvar');
     } finally {
-      await AsyncStorage.getItem(dataKey, console.log);
+      await AsyncStorage.getItem(dataKey);
     }
   };
 

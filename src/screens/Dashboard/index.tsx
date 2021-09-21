@@ -33,6 +33,7 @@ interface Props {}
 
 interface HighlightProps {
   amount: string;
+  lastTransaction: string;
 }
 interface HighlightData {
   entries: HighlightProps;
@@ -45,6 +46,27 @@ const Dashboard = (props: Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>();
+
+  const theme = useTheme();
+
+  const getLastTransactionDate = (
+    collection: DataListProps[],
+    type: 'positive' | 'negative'
+  ) => {
+    const lastTransaction = new Date(
+      Math.max.apply(
+        Math,
+        collection
+          .filter((transaction) => transaction.type === type)
+          .map((transaction) => new Date(transaction.date).getTime())
+      )
+    );
+
+    return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString(
+      'pt-BR',
+      { month: 'long' }
+    )}`;
+  };
 
   const loadTransactions = async () => {
     const res = await AsyncStorage.getItem(dataKey);
@@ -84,27 +106,41 @@ const Dashboard = (props: Props) => {
     );
     const total = entriesTotal - expensiveTotal;
 
+    setTransactions(transactionsFormatted);
+    const lastTransactionEntries = getLastTransactionDate(
+      transactions,
+      'positive'
+    );
+    const lastTransactionExpensives = getLastTransactionDate(
+      transactions,
+      'negative'
+    );
+    const totalInterval = `01 a ${lastTransactionExpensives}`;
+
     setHighlightData({
       entries: {
         amount: entriesTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }),
+        lastTransaction: `Última entrada dia ${lastTransactionEntries}`,
       },
       expensives: {
         amount: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }),
+        lastTransaction: `Última saída dia ${lastTransactionExpensives}`,
       },
       total: {
         amount: total.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }),
+        lastTransaction: totalInterval,
       },
     });
-    setTransactions(transactionsFormatted);
+
     setIsLoading(false);
   };
 
@@ -118,7 +154,6 @@ const Dashboard = (props: Props) => {
       loadTransactions();
     }, [])
   );
-  const theme = useTheme();
 
   return (
     <Container>
@@ -148,19 +183,19 @@ const Dashboard = (props: Props) => {
               type="up"
               title="Entradas"
               amount={highlightData.entries.amount}
-              lastTransaction="Hoje"
+              lastTransaction={highlightData.entries.lastTransaction}
             />
             <HighlightCard
               type="down"
               title="Saídas"
               amount={highlightData.expensives.amount}
-              lastTransaction="Hoje"
+              lastTransaction={highlightData.expensives.lastTransaction}
             />
             <HighlightCard
               type="total"
               title="Total"
               amount={highlightData.total.amount}
-              lastTransaction="Hoje"
+              lastTransaction={highlightData.total.lastTransaction}
             />
           </HighlightCards>
 
