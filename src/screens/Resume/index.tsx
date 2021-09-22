@@ -22,6 +22,7 @@ import { ptBR } from 'date-fns/locale';
 import { LoadContainer } from './styles';
 import { ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 interface TransactionData {
   type: 'positive' | 'negative';
@@ -50,6 +51,7 @@ const Resume = (props: Props) => {
   );
 
   const theme = useTheme();
+  const { user } = useAuth();
 
   const handleDateChange = (action: 'next' | 'prev') => {
     setIsLoading(true);
@@ -65,7 +67,7 @@ const Resume = (props: Props) => {
   const loadData = async () => {
     setIsLoading(true);
 
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_${user.id}`;
     const res = await AsyncStorage.getItem(dataKey);
     const resFormatted = res ? JSON.parse(res) : [];
 

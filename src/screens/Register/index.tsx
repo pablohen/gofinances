@@ -19,6 +19,7 @@ import {
 } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+import { useAuth } from '../../hooks/auth';
 interface FormData {
   name: string;
   amount: string;
@@ -46,8 +47,9 @@ const Register = (props: Props) => {
     name: 'Categoria',
   };
   const [category, setCategory] = useState(initialCategory);
+  const { user } = useAuth();
 
-  const dataKey = '@gofinances:transactions';
+  const dataKey = `@gofinances:transactions_${user.id}`;
   const navigation = useNavigation<NavigationProps>();
 
   const {
