@@ -30,7 +30,6 @@ const SignIn = (props: Props) => {
       setIsLoading(true);
       return await signInWithGoogle();
     } catch (error) {
-      console.error(error);
       Alert.alert('Não foi possível se conectar com a conta Google');
       setIsLoading(false);
     }
@@ -40,7 +39,6 @@ const SignIn = (props: Props) => {
       setIsLoading(true);
       return await signInWithApple();
     } catch (error) {
-      console.error(error);
       Alert.alert('Não foi possível se conectar com a conta Apple');
       setIsLoading(false);
     }

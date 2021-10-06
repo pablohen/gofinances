@@ -98,7 +98,6 @@ const Register = (props: Props) => {
       reset();
       navigation.navigate('Listagem');
     } catch (error) {
-      console.error(error);
       Alert.alert('Não foi possivel salvar');
     } finally {
       await AsyncStorage.getItem(dataKey);
