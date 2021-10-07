@@ -49,7 +49,7 @@ const Register = (props: Props) => {
   const [category, setCategory] = useState(initialCategory);
   const { user } = useAuth();
 
-  const dataKey = `@gofinances:transactions_${user.id}`;
+  const dataKey = `@gofinances:transactions_${user?.id}`;
   const navigation = useNavigation<NavigationProps>();
 
   const {
@@ -145,6 +145,7 @@ const Register = (props: Props) => {
             </TransactionTypes>
 
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleOpenSelectCategoryModal}
             />
@@ -153,7 +154,7 @@ const Register = (props: Props) => {
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
 
-        <Modal visible={categoryModalOpen}>
+        <Modal testID="modal-category" visible={categoryModalOpen}>
           <CategorySelect
             category={category}
             setCategory={setCategory}
